@@ -1,0 +1,82 @@
+# ACL Tables (Inter‑VLAN + Port‑Level)
+
+These tables define the exact allowed and denied flows per VLAN, including source, destination, ports, and purpose.  
+They are used to generate the final Cisco ACL configuration.
+
+---
+
+# VLAN 10 — Identity (ACL‑IN‑VLAN10)
+
+| Source VLAN | Destination | Ports Allowed | Purpose | Action |
+|-------------|-------------|---------------|---------|--------|
+| 30 (VM) | 10 | 53, 88, 135, 389, 445, 636, 3268, 3269, 123 | AD/DNS | Allow |
+| 99 (PAWs) | 10 | All AD/DNS ports + 3389, 5985, 5986, 443 | Admin | Allow |
+| 20 (ESXi) | 10 | 53, 88, 389, 445 (optional) | ESXi AD integration | Allow (conditional) |
+| 20 (ESXi) | 10 | All others | Protect Identity | Deny |
+| 90 (Router Inside) | 10 | All | Protect Identity | Deny |
+| 100 (OOB) | 10 | All | Protect Identity | Deny |
+
+---
+
+# VLAN 20 — ESXi Hosts (ACL‑IN‑VLAN20)
+
+| Source VLAN | Destination | Ports Allowed | Purpose | Action |
+|-------------|-------------|---------------|---------|--------|
+| 99 (PAWs) | 20 | 443, 902, 22 | ESXi/vCenter mgmt | Allow |
+| 10 (Identity) | 20 | 53, 88, 389, 445 | DNS/AD integration | Allow |
+| 30 (VM) | 20 | All | Protect ESXi | Deny |
+| 90 (Router Inside) | 20 | All | Protect ESXi | Deny |
+| 100 (OOB) | 20 | All | Protect ESXi | Deny |
+
+---
+
+# VLAN 30 — VM / Infra (ACL‑IN‑VLAN30)
+
+| Source VLAN | Destination | Ports Allowed | Purpose | Action |
+|-------------|-------------|---------------|---------|--------|
+| 30 (VM) | 10 | 53, 88, 135, 389, 445, 636, 3268, 3269, 123 | AD/DNS | Allow |
+| 30 (VM) | 20 | All | Protect ESXi | Deny |
+| 30 (VM) | 90 | All | Protect Router Inside | Deny |
+| 30 (VM) | 100 | All | Protect OOB | Deny |
+
+---
+
+# VLAN 99 — PAWs (ACL‑IN‑VLAN99)
+
+| Source VLAN | Destination | Ports Allowed | Purpose | Action |
+|-------------|-------------|---------------|---------|--------|
+| 99 (PAWs) | 10 | AD/DNS + RDP + WinRM + HTTPS | Admin | Allow |
+| 99 (PAWs) | 20 | 443, 902, 22 | ESXi mgmt | Allow |
+| 99 (PAWs) | 30 | RDP, WinRM, SSH | VM mgmt | Allow |
+| 99 (PAWs) | 90 | 22, 443, ICMP | Router mgmt | Allow |
+| 99 (PAWs) | 100 | 443, 22, vendor mgmt | OOB mgmt | Allow |
+| All others | 99 | All | Protect PAWs | Deny |
+
+---
+
+# VLAN 100 — OOB Management (ACL‑IN‑VLAN100)
+
+| Source VLAN | Destination | Ports Allowed | Purpose | Action |
+|-------------|-------------|---------------|---------|--------|
+| 99 (PAWs) | 100 | 443, 22, vendor mgmt | Admin | Allow |
+| 10 (Identity) | 100 | All | Protect OOB | Deny |
+| 20 (ESXi) | 100 | All | Protect OOB | Deny |
+| 30 (VM) | 100 | All | Protect OOB | Deny |
+| 90 (Router Inside) | 100 | All | Protect OOB | Deny |
+
+---
+
+# VLAN 90 — Router Inside (ACL‑IN‑VLAN90)
+
+| Source VLAN | Destination | Ports Allowed | Purpose | Action |
+|-------------|-------------|---------------|---------|--------|
+| 99 (PAWs) | 90 | 22, 443, ICMP | Router mgmt | Allow |
+| 10 (Identity) | 90 | All | Protect Router Inside | Deny |
+| 20 (ESXi) | 90 | All | Protect Router Inside | Deny |
+| 30 (VM) | 90 | All | Protect Router Inside | Deny |
+| 100 (OOB) | 90 | All | Protect Router Inside | Deny |
+
+---
+
+# Status
+ACL Tables generated — ready for Cisco ACL configuration output.
