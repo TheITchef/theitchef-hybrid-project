@@ -6,11 +6,7 @@ kanban-plugin: board
 
 ## Backlog
 
-- [ ] [[Verify OOB Management Connectivity]]
 - [ ] [[Create Repo Baseline Structure]]
-- [ ] [[Write Project Charter]]
-- [ ] [[Write Current State Assessment]]
-- [ ] [[Write Risk Assessment]]
 - [ ] [[AD DS Deployment Procedure]]
 - [ ] [[Prepare ESXi Deployment Procedure]]
 - [ ] [[PKI Architectrue]]
@@ -34,11 +30,7 @@ kanban-plugin: board
 - [ ] [[Verify Physical Cabling]]
 - [ ] [[Write Inter-VLAN Routing Procedure]]
 - [ ] [[Create Logical Network Diagram]]
-- [ ] [[Kanban Workflow Structure]]
 - [ ] [[Define Router Inside Design (Cisco 891F)]]
-- [ ] [[HINTS TO SAVE YOUR A$$]]
-- [ ] [[REVIEW CHECKLIST]]
-- [ ] [[📘 ASCII Master Index Diagram]]
 
 ## Ready
 
@@ -49,10 +41,8 @@ kanban-plugin: board
 
 ## Priority
 
-- [ ] [[Verify OOB Management Connectivity]]
-- [ ] [[Write Project Charter]]
-- [ ] [[Write Current State Assessment]]
-- [ ] [[Write Risk Assessment]]
+- [ ] [[Document Switch Port Mapping]]
+- [ ] [[Verify Inter-VLAN Routing]]
 
 ## Doing
 
