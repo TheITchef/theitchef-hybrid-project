@@ -6,13 +6,20 @@ kanban-plugin: board
 
 ## Backlog
 
-- [ ] [[Create Repo Baseline Structure]]
+- [ ] [[Verify PAW Full Reachability]]
+- [ ] [[Verify Physical Cabling]]
+
+
+## Ready
+
+
+
+## Priority
+
 - [ ] [[AD DS Deployment Procedure]]
 - [ ] [[Prepare ESXi Deployment Procedure]]
 - [ ] [[PKI Architectrue]]
-- [ ] [[Define Homelab Architecture Overview]]
 - [ ] [[Document VLAN & Trunking Plan]]
-- [ ] [[Finalize Asset Inventory]]
 - [ ] [[Define VLAN Plan]]
 - [ ] [[Define Trunking Strategy]]
 - [ ] [[Define Addressing Plan]]
@@ -21,36 +28,42 @@ kanban-plugin: board
 - [ ] [[Define Security Zones & Trust Boundaries]]
 - [ ] [[Define Device-to-VLAN Mapping]]
 - [ ] [[Define Port Mapping]]
-- [ ] [[Design ESXi01 Networking]]
 - [ ] [[Develop Switch Configuration Template]]
+- [ ] [[Design ESXi01 Networking]]
+- [ ] [[Write Inter-VLAN Routing Procedure]]
+- [ ] [[Create Logical Network Diagram]]
 - [ ] [[Disaster Recovery Architecture]]
 - [ ] [[Monitoring Architecture]]
 - [ ] [[PKI Architecture]]
-- [ ] [[Verify PAW Full Reachability]]
-- [ ] [[Verify Physical Cabling]]
-- [ ] [[Write Inter-VLAN Routing Procedure]]
-- [ ] [[Create Logical Network Diagram]]
 - [ ] [[Define Router Inside Design (Cisco 891F)]]
-
-## Ready
-
+- [ ] [[Define Monitoring Implementation Plan]]
+- [ ] [[Define Backup & Restore Implementation Plan]]
 - [ ] [[Document Switch Port Mapping]]
 - [ ] [[Verify Inter-VLAN Routing]]
-- [ ] [[Document VLAN & Trunking Plan]]
-- [ ] [[Finalize Asset Inventory]]
 
-## Priority
-
-- [ ] [[Document Switch Port Mapping]]
-- [ ] [[Verify Inter-VLAN Routing]]
 
 ## Doing
 
+
+
 ## Review
+
+
 
 ## Done
 
 - [x] [[Verify OOB Management Connectivity]]
 - [x] [[Write Project Charter]]
+- [ ] [[Define Homelab Architecture Overview]]
 - [x] [[Write Current State Assessment]]
+- [ ] [[Create Repo Baseline Structure]]
 - [x] [[Write Risk Assessment]]
+
+
+
+
+%% kanban:settings
+```
+{"kanban-plugin":"board"}
+```
+%%

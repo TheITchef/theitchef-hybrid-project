@@ -1,163 +1,214 @@
-# homelab-architecture-overview
-Version: 2026-07-03  
-Author: Ioannis Mintzivyris  
-Location: Upplands Väsby, Stockholm County, Sweden
+# Homelab Architecture Overview
 
-================================================================================
-## 1. Executive Summary
-================================================================================
-This document provides a high-level overview of the hybrid homelab architecture.
-It defines the logical layers, physical topology, trust boundaries, and management
-plane. It serves as the master reference for all future design tasks including
-VLAN planning, addressing, identity services, PKI, and virtualization.
+## Purpose
+Provide a single, high‑level architectural overview of the entire hybrid homelab environment, describing all major layers, components, and trust boundaries.  
+This document acts as the master reference for identity, PKI, compute, network, and Azure integration.
 
-================================================================================
-## 2. Logical Architecture Overview
-================================================================================
+## Scope
+This overview covers:
+- Identity architecture (AD DS, DNS, DHCP, ADFS, Azure AD Connect)
+- PKI architecture (Linux Root CA, Windows Issuing CA)
+- Network architecture (WS‑3850, C3560CG, Cisco 891F)
+- Compute architecture (Hyper‑V, ESXi01/02)
+- Azure architecture (Hybrid identity, federation)
+- Automation architecture (PowerShell, Terraform)
+- Trust boundaries and segmentation
 
-### 2.1 Compute Layer
-- DC01 — Active Directory Domain Services  / DHCP / DNS
-- ESXi01 — ESXI Host (PROD/STAGING VMs)
-- ESXi02 — Available , Role TBD (PROXMOX candidate)  
-- MS01 — Microsoft Infra via Hyper V VMs
+## 1. Identity Architecture
+From the Hybrid Homelab Project Document:
+> “T330 as primary DC  
+> Secondary DC VM  
+> DNS + DHCP  
+> Azure AD Connect  
+> ADFS + WAP  
+> UPN domain: theitchef.com”
 
-### 2.2 Network Layer
-- Cisco WS-C3850-48P — Core switching / InterVLAN routing  
-- Cisco WS-C3560CG-8PC-S — OOB / Managememt switching  
-- Cisco C891F-K9 — Only WAN edge / No VLAN routing / TBD L3 routing
+### Components
+- **Primary Domain Controller (T330)**  
+- **Secondary Domain Controller (VM)**  
+- **DNS + DHCP services**  
+- **Azure AD Connect sync engine**  
+- **ADFS + WAP federation pair**  
+- **UPN domain:** `theitchef.com`
 
-### 2.3 Identity Layer
-- Active Directory Domain Services  
-- Two-tier PKI  
-- ADFS + WAP  
-- Azure AD Connect (hybrid identity)
+### Responsibilities
+- Authentication & authorization  
+- Directory services  
+- Hybrid identity synchronization  
+- Federation for modern authentication  
+- DHCP relay across VLANs  
+- DNS reachability across all segments
 
-### 2.4 Security Layer
-- Trust boundaries (LAN, WAN, OOB)  
-- Authentication flows  
-- Certificate services  
-- Federation boundaries
+## 2. PKI Architecture
+From the Hybrid Homelab Project Document:
+> “Linux Root CA (offline)  
+> Windows Issuing CA (online)  
+> PKI VLAN isolation  
+> Enterprise templates  
+> Secure key storage”
 
-### 2.5 Management Layer
-- iDRAC / iLO  
-- OOB switch  
-- PAWs (PN52, T470s)  
-- ESXi management (vmk0)
+### Components
+- **Offline Linux Root CA**  
+- **Online Windows Issuing CA**  
+- **Dedicated PKI VLAN**  
+- **Enterprise certificate templates**  
+- **Secure key storage & issuance policies**
 
-================================================================================
-## 3. Physical Topology Overview
-================================================================================
+### Responsibilities
+- Certificate lifecycle  
+- Trust anchor for ADFS, ESXi, Hyper‑V, internal services  
+- TLS for all internal systems  
+- Secure issuance boundaries
 
-### 3.1 Rack-Level View (High-Level)
-- Core switch (3850) as central aggregation  
-- OOB switch (3560CG) for management plane  
-- Router (891F) providing WAN uplink  
-- Servers connected to core and OOB  
-- PAWs accessing OOB + LAN
+## 3. Network Architecture
+From the Hybrid Homelab Project Document:
+> “WS‑3850: L3 core routing  
+> C3560CG: OOB + access  
+> Cisco 891F: WAN edge  
+> Granular VLAN plan: Identity, PKI, ADFS, Hyper‑V host, Hyper‑V VMs, ESXi hosts, ESXi VMs, PAWs, OOB, Storage, WAN edge, Native VLAN”
 
-### 3.2 High-Level Diagram (ASCII)
+### Components
+- **WS‑3850** — L3 core switch  
+- **C3560CG** — OOB + access  
+- **Cisco 891F** — WAN edge router  
+- **Patch panel + structured cabling**  
+- **Granular VLAN segmentation**  
+- **Inter‑VLAN routing**  
+- **DHCP relay**  
+- **SVI architecture**
 
-+---------------------------+
-|        WAN / ISP         |
-+-------------+-------------+
+### Responsibilities
+- Routing between all VLANs  
+- OOB isolation  
+- WAN connectivity  
+- Segmentation for identity, PKI, compute, PAWs  
+- Enforcement of trust boundaries  
+- ACL enforcement  
+- Native VLAN control
+
+## 4. Compute Architecture
+From the Hybrid Homelab Project Document:
+> “Hyper‑V host  
+> ESXi01 + ESXi02  
+> VM networks aligned with VLAN plan  
+> Future vCenter support”
+
+### Components
+- **Hyper‑V host**  
+- **ESXi01 + ESXi02**  
+- **VM placement per VLAN**  
+- **vCenter‑ready design**
+
+### Responsibilities
+- Virtualization platform  
+- Segmented VM networks  
+- Compute layer for identity, PKI, ADFS, monitoring, automation  
+- Support for future vCenter deployment
+
+## 5. Azure Architecture
+From the Hybrid Homelab Project Document:
+> “Azure AD Connect  
+> ADFS/WAP federation  
+> Terraform automation  
+> Hybrid identity”
+
+### Components
+- **Azure AD tenant**  
+- **Azure AD Connect**  
+- **ADFS/WAP**  
+- **Terraform IaC**
+
+### Responsibilities
+- Hybrid identity  
+- Federation  
+- Cloud integration  
+- Infrastructure automation
+
+## 6. Automation Architecture
+From the Hybrid Homelab Project Document:
+> “Windows PAW → PowerShell, Git  
+> Linux PAW → Terraform, Root CA  
+> Git repo → feature‑branch workflow  
+> Obsidian Kanban → PM control”
+
+### Components
+- **Windows PAW**  
+- **Linux PAW**  
+- **PowerShell automation**  
+- **Terraform IaC**  
+- **Git feature‑branch workflow**  
+- **Obsidian Kanban**
+
+### Responsibilities
+- Automated deployment  
+- Infrastructure as code  
+- Documentation discipline  
+- Predictable change control
+
+## 7. Trust Boundaries & Security Zones
+Derived from VLAN segmentation + PKI isolation:
+- Identity zone  
+- PKI zone  
+- ADFS/WAP zone  
+- Hyper‑V host zone  
+- Hyper‑V VM zone  
+- ESXi host zone  
+- ESXi VM zone  
+- PAW zone  
+- OOB zone  
+- Storage zone  
+- WAN edge zone  
+- Native VLAN
+
+Each zone has:
+- Defined ACLs  
+- Routing rules  
+- Allowed flows  
+- Security expectations  
+
+## 8. High‑Level Diagram (ASCII placeholder)
+
++----------------------+
+|      Azure AD        |
++----------+-----------+
 |
-[ Cisco 891F ]
+ADFS / WAP
 |
-+-------------+-------------+
-|         Core Switch       |
-|      Cisco WS-C3850       |
-+-------------+-------------+
++--------------------------+--------------------------+
+|                     Identity VLAN                   |
+|  DC01 (T330)     DC02 (VM)     DNS/DHCP             |
++--------------------------+--------------------------+
+|
+Core WS‑3850
 |
 -------------------------------------------------
-|                   |                         |
-[DC01]             [ESXi01]                  [ESXi02]
-|                   |                         |
--------------------------------------------------
-|
-[ MS01 Server ]
-|
-+-------------+-------------+
-|         OOB Switch        |
-|   Cisco WS-C3560CG-8PC-S  |
-+-------------+-------------+
-|
-[ PAWs / Mgmt ]
+|                 |                 |           |
+PKI VLAN        Compute VLAN       PAW VLAN     OOB VLAN
+Root CA / Issuer   Hyper‑V / ESXi     Windows PAW  C3560CG
+|                 |                 |           |
+Cisco 891F (WAN Edge)
 Code
 
 
-================================================================================
-## 4. Trust Boundaries
-================================================================================
+## 9. References
+- Hybrid Homelab Project Document  
+- README.md  
+- Architecture folder documents  
 
-### 4.1 Internal LAN
-- Core switching  
-- Servers  
-- ESXi hosts  
-- MS01 workloads  
-- AD DS, PKI, ADFS
+## 10. Monitoring Architecture
+From the Hybrid Homelab Project Document:
+> “Monitoring Architecture”  
 
-### 4.2 OOB Management Network
-- iDRAC / iLO  
-- ESXi vmk0  
-- PAWs  
-- OOB switch
 
-### 4.3 WAN Boundary
-- Router WAN interface  
-- ISP handoff  
-- Public-facing services (if any)
+### Components
+- Central monitoring VM
+- Syslog ingestion
+- SNMP polling
+- Certificate-based secure telemetry
+- Azure monitoring integration (future)
 
-================================================================================
-## 5. Management Plane Overview
-================================================================================
-
-### 5.1 Access Paths
-- PAWs → OOB switch → iDRAC/iLO  
-- PAWs → LAN → ESXi management  
-- PAWs → LAN → DC01/MS01
-
-### 5.2 Management Interfaces
-- iDRAC8 Express / No dedicated Port  (DC01)  
-- iDRAC7 Enterprise / Dedicated LAN port (ESXi01, ESXi02)  
-- iLO4 Advanced / Dedicated LAN port (MS01)  
-- ESXi vmk0  
-- Switch mgmt SVI  
-- Router mgmt
-
-### 5.3 Out-of-Band Strategy
-- Dedicated OOB switch  
-- Segregated mgmt VLAN  
-- PAW-only access  
-- No production traffic
-
-================================================================================
-## 6. Dependencies & Future Work
-================================================================================
-
-### 6.1 Required Next Documents
-- homelab-vlan-plan  
-- homelab-addressing-plan  
-- homelab-oob-design  
-- homelab-pki-architecture  
-- homelab-ad-architecture  
-- homelab-esxi-networking-overview
-
-### 6.2 Required Configurations
-- VLAN creation  
-- IP addressing  
-- Routing  
-- ESXi vSwitch design  
-- PKI deployment  
-- ADFS/WAP configuration  
-- Azure AD Connect setup
-
-================================================================================
-## 7. Notes
-================================================================================
-- This document is intentionally high-level.  
-- Detailed configurations will be defined in downstream documents.  
-- This overview is the baseline for all future homelab design tasks.
-
-================================================================================
-END OF DOCUMENT
-================================================================================
+### Responsibilities
+- Health visibility across identity, PKI, compute, and network
+- Alerting for critical events
+- Log retention and correlation
+- PKI certificate expiry monitoring
