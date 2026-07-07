@@ -41,7 +41,6 @@ kanban-plugin: board
 
 ## Doing
 
-- [ ] [[Design ESXi01 Networking]]
 
 
 ## Review
@@ -55,6 +54,7 @@ kanban-plugin: board
 - [x] [[Define Homelab Architecture Overview]]
 - [x] [[Write Current State Assessment]]
 - [x] [[Prepare ESXi Deployment Procedure]]
+- [x] [[Design ESXi01 Networking]]
 - [x] [[Create Repo Baseline Structure]]
 - [x] [[Write Risk Assessment]]
 - [x] [[AD DS Deployment Procedure]]
