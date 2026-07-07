@@ -16,7 +16,6 @@ kanban-plugin: board
 
 ## Priority
 
-- [ ] [[Prepare ESXi Deployment Procedure]]
 - [ ] [[PKI Architectrue]]
 - [ ] [[Document VLAN & Trunking Plan]]
 - [ ] [[Define VLAN Plan]]
@@ -28,7 +27,6 @@ kanban-plugin: board
 - [ ] [[Define Device-to-VLAN Mapping]]
 - [ ] [[Define Port Mapping]]
 - [ ] [[Develop Switch Configuration Template]]
-- [ ] [[Design ESXi01 Networking]]
 - [ ] [[Write Inter-VLAN Routing Procedure]]
 - [ ] [[Create Logical Network Diagram]]
 - [ ] [[Disaster Recovery Architecture]]
@@ -43,6 +41,7 @@ kanban-plugin: board
 
 ## Doing
 
+- [ ] [[Design ESXi01 Networking]]
 
 
 ## Review
@@ -55,6 +54,7 @@ kanban-plugin: board
 - [x] [[Write Project Charter]]
 - [x] [[Define Homelab Architecture Overview]]
 - [x] [[Write Current State Assessment]]
+- [x] [[Prepare ESXi Deployment Procedure]]
 - [x] [[Create Repo Baseline Structure]]
 - [x] [[Write Risk Assessment]]
 - [x] [[AD DS Deployment Procedure]]
