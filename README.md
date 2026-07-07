@@ -1,5 +1,11 @@
 📌 Project Overview
 
+**************************************
+THIS VERSION IS DEPRECATED 07-07-2026
+**************************************
+
+
+
 This homelab mirrors real corporate hybrid identity and infrastructure design.
 It includes:
 
