@@ -16,7 +16,6 @@ kanban-plugin: board
 
 ## Priority
 
-- [ ] [[AD DS Deployment Procedure]]
 - [ ] [[Prepare ESXi Deployment Procedure]]
 - [ ] [[PKI Architectrue]]
 - [ ] [[Document VLAN & Trunking Plan]]
@@ -54,10 +53,11 @@ kanban-plugin: board
 
 - [x] [[Verify OOB Management Connectivity]]
 - [x] [[Write Project Charter]]
-- [ ] [[Define Homelab Architecture Overview]]
+- [x] [[Define Homelab Architecture Overview]]
 - [x] [[Write Current State Assessment]]
-- [ ] [[Create Repo Baseline Structure]]
+- [x] [[Create Repo Baseline Structure]]
 - [x] [[Write Risk Assessment]]
+- [x] [[AD DS Deployment Procedure]]
 
 
 
