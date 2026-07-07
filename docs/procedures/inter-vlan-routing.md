@@ -1,113 +1,140 @@
-# Inter‑VLAN Routing Validation Procedure
-## Hybrid Homelab — WS‑3850 Layer‑3 Routing Verification
-
----
+# Inter-VLAN Routing Procedure
+Version: 2026‑07‑07
 
 ## 1. Purpose
-This procedure validates **Inter‑VLAN Routing** on the Cisco WS‑3850 L3 core switch.  
-It ensures that VLANs can communicate according to the routing plan, segmentation model, and ACL enforcement strategy.
-
-This validation is required before:
-- Identity deployment  
-- PKI deployment  
-- ADFS/WAP federation  
-- Hyper‑V and ESXi deployment  
-- VM placement  
-- Azure AD Connect configuration  
+Step-by-step procedure for enabling, validating, and troubleshooting inter‑VLAN routing on the Cisco core switch.  
+Aligns with VLAN Plan, Addressing Plan, Routing Plan, ACL Plan, and Security Zones.
 
 ---
 
-## 2. Scope
-This procedure covers:
-- SVI gateway reachability  
-- Cross‑VLAN communication  
-- Routing table validation  
-- ACL enforcement  
-- OOB reachability  
-- PAW reachability  
-- Router Inside VLAN reachability  
+## 2. Prerequisites
+- VLANs created according to `vlan-plan.md`
+- SVI gateways defined according to `routing-plan.md`
+- ACLs applied according to `acl-plan.md`
+- Trunking configured according to `trunking-strategy.md`
+- Port mapping validated according to `port-mapping.md`
 
 ---
 
-## 3. Prerequisites
-- VLAN Plan completed  
-- Addressing Plan completed  
-- SVI interfaces configured  
-- Routing Plan completed  
-- ACL Plan drafted  
-- WS‑3850 configured  
-- PAW connected to management network  
-- No ACLs blocking expected traffic  
+## 3. Enable IP Routing
+
+conf t
+ip routing
+end
+Code
+
+
+Verification:
+
+show ip route
+Code
+
 
 ---
 
-## 4. Validation Tasks
+## 4. Create SVIs for Each VLAN
 
-### 4.1 Validate VLAN Gateway Reachability (From PAW)
-Test reachability of all SVI gateways:
+Example:
 
-- `ping 192.168.10.1` — Identity VLAN  
-- `ping 192.168.20.1` — ESXi Hosts VLAN  
-- `ping 192.168.30.1` — VM Network VLAN  
-- `ping 192.168.99.1` — PAW VLAN  
-- `ping 192.168.100.1` — OOB VLAN  
-- `ping 192.168.90.1` — Router Inside VLAN  
+interface Vlan50
+description INFRA-VM
+ip address 10.10.50.1 255.255.255.0
+no ip redirects
+no ip proxy-arp
+ip access-group ACL_INFRA in
+Code
 
-**Expected result:** All gateways reachable.
 
----
+Repeat for all VLANs defined in the routing plan.
 
-### 4.2 Validate Cross‑VLAN Communication
-From PAW:
+Verification:
 
-- Ping DC01  
-- Ping ESXi01  
-- Ping ESXi02  
-- Ping MS01  
-- Ping ADFS  
-- Ping WAP  
-- Ping PKI Issuing CA  
+show ip interface brief | include Vlan
+Code
 
-**Expected result:** All devices reachable across VLANs.
 
 ---
 
-### 4.3 Validate Routing Table (WS‑3850)
-Run:
+## 5. Configure Default Route
 
-- `show ip route 192.168.10.0`  
-- `show ip route 192.168.20.0`  
-- `show ip route 192.168.30.0`  
-- `show ip route 192.168.99.0`  
-- `show ip route 192.168.100.0`  
-- `show ip route 192.168.90.0`  
+ip route 0.0.0.0 0.0.0.0 10.10.50.254
+Code
 
-**Expected result:**  
-- All subnets present  
-- All SVIs listed as directly connected  
-- Default route pointing to Cisco 891F  
+
+Verification:
+
+show ip route static
+Code
+
 
 ---
 
-### 4.4 Validate ACL Behavior
-Confirm:
+## 6. Validate Inter‑VLAN Connectivity
 
-- Identity → Compute → PKI flows allowed  
-- OOB VLAN restricted  
-- PAW VLAN restricted  
-- WAN edge flows restricted  
-- No ACL blocks expected traffic  
+### Step 1 — Ping gateways
 
-**Expected result:** ACLs enforce segmentation without breaking routing.
+ping 10.10.10.1
+ping 10.10.20.1
+ping 10.10.30.1
+...
+Code
+
+
+### Step 2 — Ping between VLANs (allowed flows only)
+
+Examples:
+
+ping 10.10.50.11   ! DC01
+ping 10.10.40.51   ! ESXi VM network
+ping 10.10.60.101  ! PAW01
+Code
+
+
+### Step 3 — Test blocked flows (ACL enforcement)
+
+ping 10.10.60.101 source 10.10.70.50   ! User → PAW (should fail)
+ping 10.10.30.51 source 10.10.70.50    ! User → Storage (should fail)
+Code
+
 
 ---
 
-### 4.5 Validate OOB Management Routing
-From PAW:
+## 7. Troubleshooting
 
-- Ping iLO/iDRAC interfaces  
-- Ping C3560CG  
-- Ping WS‑3850 management SVI  
+### Check SVI status
 
-**Expected result:** OOB reachable but isolated.
+show run interface vlan X
+show ip interface vlan X
+Code
 
+
+### Check ACL hits
+
+show access-lists ACL_<NAME>
+Code
+
+
+### Check trunk status
+
+show interfaces trunk
+Code
+
+
+### Check MAC learning
+
+show mac address-table vlan X
+Code
+
+
+### Check ARP
+
+show ip arp vlan X
+Code
+
+
+---
+
+## 8. Notes
+- All routing behavior must align with ACL Plan and Security Zones.  
+- DMZ routing must always pass through the firewall.  
+- Storage VLAN must remain isolated except for ESXi and backup flows.  
