@@ -19,7 +19,6 @@ kanban-plugin: board
 - [ ] [[PKI Architectrue]]
 - [ ] [[Document VLAN & Trunking Plan]]
 - [ ] [[Define VLAN Plan]]
-- [ ] [[Define Trunking Strategy]]
 - [ ] [[Define Addressing Plan]]
 - [ ] [[Define Routing Plan]]
 - [ ] [[Define ACL Plan]]
@@ -41,7 +40,7 @@ kanban-plugin: board
 
 ## Doing
 
-- [ ] [[Design ESXi01 Networking]]
+- [ ] [[Define Trunking Strategy]]
 
 
 ## Review
@@ -55,6 +54,7 @@ kanban-plugin: board
 - [x] [[Define Homelab Architecture Overview]]
 - [x] [[Write Current State Assessment]]
 - [x] [[Prepare ESXi Deployment Procedure]]
+- [x] [[Design ESXi01 Networking]]
 - [x] [[Create Repo Baseline Structure]]
 - [x] [[Write Risk Assessment]]
 - [x] [[AD DS Deployment Procedure]]
