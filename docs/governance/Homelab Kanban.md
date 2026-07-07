@@ -19,7 +19,6 @@ kanban-plugin: board
 - [ ] [[PKI Architectrue]]
 - [ ] [[Document VLAN & Trunking Plan]]
 - [ ] [[Define VLAN Plan]]
-- [ ] [[Define Trunking Strategy]]
 - [ ] [[Define Addressing Plan]]
 - [ ] [[Define Routing Plan]]
 - [ ] [[Define ACL Plan]]
@@ -41,6 +40,7 @@ kanban-plugin: board
 
 ## Doing
 
+- [ ] [[Define Trunking Strategy]]
 
 
 ## Review
